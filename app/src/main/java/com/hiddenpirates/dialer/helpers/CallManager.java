@@ -14,7 +14,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.hiddenpirates.dialer.R;
 import com.hiddenpirates.dialer.activities.MainActivity;
-import com.hiddenpirates.dialer.activities.callingactivities.CallActivity;
+import com.hiddenpirates.dialer.activities.CallActivity;
 
 public class CallManager {
 

@@ -8,7 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.hiddenpirates.dialer.activities.MainActivity;
-import com.hiddenpirates.dialer.activities.callingactivities.CallActivity;
+import com.hiddenpirates.dialer.activities.CallActivity;
 import com.hiddenpirates.dialer.helpers.CallManager;
 import com.hiddenpirates.dialer.helpers.NotificationHelper;
 

@@ -1,4 +1,4 @@
-package com.hiddenpirates.dialer.activities.callingactivities;
+package com.hiddenpirates.dialer.activities;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -39,7 +39,7 @@ public class CallActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calling);
+        setContentView(R.layout.activity_call);
 
         initializeValues();
         addLockScreenFlags();

@@ -14,18 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Phone">
         <activity
-            android:name=".activities.callingactivities.CallActivity"
+            android:name=".activities.CallActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:showOnLockScreen="true"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".activities.callingactivities.IncomingCallActivity"
-            android:exported="false"
-            android:excludeFromRecents="true"
-            android:screenOrientation="portrait"
-            android:showOnLockScreen="true"
-            android:launchMode="singleTop"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activities.DialerActivity"

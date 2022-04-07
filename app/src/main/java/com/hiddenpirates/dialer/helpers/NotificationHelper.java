@@ -15,8 +15,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.hiddenpirates.dialer.R;
-import com.hiddenpirates.dialer.activities.callingactivities.CallActivity;
-import com.hiddenpirates.dialer.activities.callingactivities.IncomingCallActivity;
+import com.hiddenpirates.dialer.activities.CallActivity;
 import com.hiddenpirates.dialer.receivers.ActionReceiver;
 
 public class NotificationHelper {
