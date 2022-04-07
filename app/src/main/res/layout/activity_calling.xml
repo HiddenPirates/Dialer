@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activities.callingactivities.CallActivity">
+
+    <RelativeLayout
+        android:id="@+id/inProgressCallRLView"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:layout_marginTop="40dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/callerName"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:text="Nur Alam"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/callerPhoneNumber"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:text="+918348313317"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/callingDuration"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/darkGrey"
+                android:textAlignment="center"
+                android:text="1:22:30"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/callingStatus"
+                android:textSize="16sp"
+                android:textColor="@color/green"
+                android:textAlignment="center"
+                android:text="Connecting..."
+                android:layout_marginTop="20dp"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_above="@+id/endCallBtn"
+            android:layout_marginBottom="80dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="3">
+                <Button
+                    android:id="@+id/muteBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableTop="@drawable/ic_mic_off"
+                    android:text="Mute"
+                    android:textSize="11sp"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/my_theme"
+                    tools:ignore="HardcodedText" />
+                <Button
+                    android:id="@+id/keyPadBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableTop="@drawable/ic_dialpad"
+                    android:text="Keypad"
+                    android:textSize="11sp"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/my_theme"
+                    tools:ignore="HardcodedText" />
+                <Button
+                    android:id="@+id/speakerBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableTop="@drawable/ic_volume_up"
+                    android:text="Speaker"
+                    android:textSize="11sp"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/my_theme"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="3">
+                <Button
+                    android:id="@+id/holdBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableTop="@drawable/ic_pause"
+                    android:text="Hold"
+                    android:textSize="11sp"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/my_theme"
+                    tools:ignore="HardcodedText" />
+                <Button
+                    android:id="@+id/recordBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableTop="@drawable/ic_record_voice_over"
+                    android:text="Record"
+                    android:textSize="11sp"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/my_theme"
+                    tools:ignore="HardcodedText" />
+                <Button
+                    android:id="@+id/addCallBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableTop="@drawable/ic_add_ic_call"
+                    android:text="Add Call"
+                    android:textSize="11sp"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/my_theme"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/endCallBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:src="@drawable/ic_call_end_red"
+            app:tint="@android:color/white"
+            android:contentDescription="End Call"
+            android:backgroundTint="@color/red"
+            app:borderWidth="0dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="35sp"
+            tools:ignore="HardcodedText" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/incomingRLView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:layout_marginTop="40dp"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/incomingCallerNameTV"
+            android:textSize="22sp"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:text="Nur Alam"
+            android:layout_alignParentTop="true"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/incomingCallerPhoneNumberTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/incomingCallerNameTV"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:text="+918348313317"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/ringingStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/incomingCallerPhoneNumberTV"
+            android:layout_marginTop="20dp"
+            android:text="Ringing..."
+            android:textAlignment="center"
+            android:textColor="@color/my_theme"
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
+
+        <RelativeLayout
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="30dp"
+            android:paddingEnd="30dp"
+            android:layout_marginBottom="20dp">
+
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/rejectCallBtn"
+                android:background="@drawable/incoming_call_button_style"
+                app:backgroundTint="@color/red"
+                android:text="Reject"
+                android:layout_alignParentStart="true"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/answerCallBtn"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/incoming_call_button_style"
+                android:text="Answer"
+                app:backgroundTint="@color/green"
+                tools:ignore="HardcodedText" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/My_Files_Pogramms/Android_Projects/Phone/app/src/main/res/drawable/circle.xml" value="0.2025" />
+        <entry key="..\:/My_Files_Pogramms/Android_Projects/Phone/app/src/main/res/drawable/incming_call_button_style.xml" value="0.31" />
+        <entry key="..\:/My_Files_Pogramms/Android_Projects/Phone/app/src/main/res/layout/activity_calling.xml" value="0.36666666666666664" />
+        <entry key="..\:/My_Files_Pogramms/Android_Projects/Phone/app/src/main/res/layout/activity_dialer.xml" value="0.36666666666666664" />
+        <entry key="..\:/My_Files_Pogramms/Android_Projects/Phone/app/src/main/res/layout/activity_incoming_call.xml" value="0.36666666666666664" />
+        <entry key="..\:/My_Files_Pogramms/Android_Projects/Phone/app/src/main/res/layout/activity_main.xml" value="0.35260416666666666" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

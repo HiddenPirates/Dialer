@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">HP Phone</string>
+    <string name="DialerActivityLabel">Label Of Dialer Activity</string>
+</resources>
