@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="10dp">
 
     <LinearLayout
@@ -12,9 +13,13 @@
         android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/keypadCancelBtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/ic_cancel"
+            android:background="@android:color/transparent"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             tools:ignore="ContentDescription,HardcodedText" />
 
         <TextView
@@ -29,7 +34,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_below="@+id/in_progress_call_dialpad_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -46,20 +50,31 @@
                 android:text="$"
                 android:layout_weight="1"
                 style="?android:attr/buttonBarButtonStyle"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/ic__1"/>
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="ABC"
+                android:textSize="11sp"
                 android:layout_weight="1"
                 tools:ignore="HardcodedText"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/ic__2"
                 style="?android:attr/buttonBarButtonStyle" />
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="DEF"
                 android:layout_weight="1"
+                android:textSize="11sp"
                 tools:ignore="HardcodedText"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/ic__3"
                 style="?android:attr/buttonBarButtonStyle" />
         </LinearLayout>
 
@@ -74,21 +89,33 @@
                 android:layout_height="wrap_content"
                 android:text="GHI"
                 android:layout_weight="1"
+                android:textSize="11sp"
                 style="?android:attr/buttonBarButtonStyle"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/ic__4"/>
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="JKL"
                 android:layout_weight="1"
+                android:textSize="11sp"
                 tools:ignore="HardcodedText"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/ic__5"
                 style="?android:attr/buttonBarButtonStyle" />
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="MNO"
                 android:layout_weight="1"
+                android:textSize="11sp"
                 tools:ignore="HardcodedText"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/ic__6"
                 style="?android:attr/buttonBarButtonStyle" />
         </LinearLayout>
 
@@ -103,21 +130,33 @@
                 android:layout_height="wrap_content"
                 android:text="PQRS"
                 android:layout_weight="1"
+                android:textSize="11sp"
                 style="?android:attr/buttonBarButtonStyle"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/ic__7"/>
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="TUV"
                 android:layout_weight="1"
+                android:textSize="11sp"
                 tools:ignore="HardcodedText"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/ic__8"
                 style="?android:attr/buttonBarButtonStyle" />
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="WXYZ"
                 android:layout_weight="1"
+                android:textSize="11sp"
                 tools:ignore="HardcodedText"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/ic__9"
                 style="?android:attr/buttonBarButtonStyle" />
         </LinearLayout>
 
@@ -130,27 +169,36 @@
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="*"
+                android:text=""
                 android:layout_weight="1"
                 style="?android:attr/buttonBarButtonStyle"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/ic_star"/>
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="+"
                 android:layout_weight="1"
                 tools:ignore="HardcodedText"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/ic__0"
                 style="?android:attr/buttonBarButtonStyle" />
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="#"
+                android:text=""
                 android:layout_weight="1"
                 tools:ignore="HardcodedText"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/ic_hash"
                 style="?android:attr/buttonBarButtonStyle" />
         </LinearLayout>
     </LinearLayout>
 
 
 
-</RelativeLayout>
+</LinearLayout>

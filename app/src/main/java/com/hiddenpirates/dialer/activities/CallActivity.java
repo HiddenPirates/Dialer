@@ -11,12 +11,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hiddenpirates.dialer.R;
 import com.hiddenpirates.dialer.helpers.CallManager;
@@ -40,7 +42,7 @@ public class CallActivity extends AppCompatActivity {
 
     RelativeLayout inProgressCallRLView, incomingRLView;
 
-    public static boolean isMuted, isSpeakerOn, isCallOnHold, isRecordingCall, isKeypadShown;
+    public static boolean isMuted, isSpeakerOn, isCallOnHold, isRecordingCall;
 
     public static String PHONE_NUMBER, CALLER_NAME;
 
@@ -251,6 +253,19 @@ public class CallActivity extends AppCompatActivity {
 
                 NotificationHelper.createIngoingCallNotification(CallActivity.this, CALLER_NAME, PHONE_NUMBER, "01:12:00", "Speaker Off", muteBtnName);
             }
+        });
+
+        keypadBtn.setOnClickListener(v -> {
+
+            BottomSheetDialog keypadDialog = new BottomSheetDialog(CallActivity.this);
+            keypadDialog.setContentView(R.layout.in_progress_call_dialpad);
+            keypadDialog.setCanceledOnTouchOutside(true);
+
+            ImageButton keypadCancelBtn = keypadDialog.findViewById(R.id.keypadCancelBtn);
+            assert keypadCancelBtn != null;
+            keypadCancelBtn.setOnClickListener(v1 -> keypadDialog.cancel());
+
+            keypadDialog.show();
         });
 
         addCallBtn.setOnClickListener(v -> Toast.makeText(this, "This feature is not implemented yet!", Toast.LENGTH_SHORT).show());
