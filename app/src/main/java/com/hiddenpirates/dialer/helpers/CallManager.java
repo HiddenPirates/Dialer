@@ -40,6 +40,7 @@ public class CallManager {
                 context.sendBroadcast(broadCastIntent);
 
                 notificationManager.cancel(NotificationHelper.NOTIFICATION_ID);
+                NotificationHelper.createIngoingCallNotification(context, CallActivity.CALLER_NAME, CallActivity.PHONE_NUMBER, "00:12:45", CallActivity.speakerBtnName, CallActivity.muteBtnName);
             }
             else if (newState == Call.STATE_DISCONNECTED){
 
@@ -47,6 +48,8 @@ public class CallManager {
 
                 Intent intent = new Intent("call_ended");
                 context.sendBroadcast(intent);
+
+                CallActivity.isSpeakerOn = false;
 
                 notificationManager.cancel(NotificationHelper.NOTIFICATION_ID);
             }
