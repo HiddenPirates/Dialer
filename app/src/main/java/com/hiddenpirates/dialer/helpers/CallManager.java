@@ -30,7 +30,7 @@ public class CallManager {
         public void onStateChanged(Call call, int newState) {
 
             Log.d(MainActivity.TAG, "onStateChanged: " + newState);
-            
+
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             HP_CALL_STATE = newState;
 
