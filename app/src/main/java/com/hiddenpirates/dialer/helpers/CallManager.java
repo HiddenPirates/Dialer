@@ -30,6 +30,7 @@ public class CallManager {
         public void onStateChanged(Call call, int newState) {
 
             Log.d(MainActivity.TAG, "onStateChanged: " + newState);
+            
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             HP_CALL_STATE = newState;
 
@@ -50,10 +51,15 @@ public class CallManager {
                 notificationManager.cancel(NotificationHelper.NOTIFICATION_ID);
             }
             else if (newState == Call.STATE_DISCONNECTING){
+
                 CallActivity.callingStatusTV.setText("Disconnected");
                 CallActivity.callingStatusTV.setTextColor(context.getColor(R.color.red));
+
+                CallActivity.ringingStatusTV.setText("Rejected");
+                CallActivity.ringingStatusTV.setTextColor(context.getColor(R.color.red));
             }
             else if (newState == Call.STATE_HOLDING){
+
                 CallActivity.callingStatusTV.setText("Call on hold");
                 CallActivity.callingStatusTV.setTextColor(context.getColor(R.color.red));
             }

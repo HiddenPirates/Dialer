@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hiddenpirates.dialer.R;
 import com.hiddenpirates.dialer.helpers.CallManager;
+import com.hiddenpirates.dialer.helpers.Constant;
 
 public class CallActivity extends AppCompatActivity {
 
@@ -29,7 +30,7 @@ public class CallActivity extends AppCompatActivity {
     public static TextView callerNameTV, callerPhoneNumberTV, callDurationTV, callingStatusTV;
 
     @SuppressLint("StaticFieldLeak")
-    public static TextView incomingCallerPhoneNumberTV, incomingCallerNameTV;
+    public static TextView incomingCallerPhoneNumberTV, incomingCallerNameTV, ringingStatusTV;
 
     RelativeLayout inProgressCallRLView, incomingRLView;
 
@@ -126,22 +127,27 @@ public class CallActivity extends AppCompatActivity {
 
         Bundle intentExtras = intent.getExtras();
 
-        String phoneNumber;
+        String PHONE_NUMBER;
 
         if (intentExtras.containsKey("phoneNumber"))
-            phoneNumber = intent.getStringExtra("phoneNumber");
+            PHONE_NUMBER = intent.getStringExtra("phoneNumber");
         else
-            phoneNumber = "Hidden Number";
+            PHONE_NUMBER = "Hidden Number";
 
-        if (intentExtras.containsKey("dialing")){
-            if (intent.getBooleanExtra("dialing", false)){
+        if (intentExtras.containsKey("callState")){
+
+            if (intent.getStringExtra("callState").equals(Constant.HP_CALL_STATE_OUTGOING)){
                 inProgressCallRLView.setVisibility(View.VISIBLE);
                 incomingRLView.setVisibility(View.GONE);
             }
+            else if (intent.getStringExtra("callState").equals(Constant.HP_CALL_STATE_INCOMING)){
+                inProgressCallRLView.setVisibility(View.GONE);
+                incomingRLView.setVisibility(View.VISIBLE);
+            }
         }
 
-        callerPhoneNumberTV.setText(phoneNumber);
-        incomingCallerPhoneNumberTV.setText(phoneNumber);
+        callerPhoneNumberTV.setText(PHONE_NUMBER);
+        incomingCallerPhoneNumberTV.setText(PHONE_NUMBER);
 //        ______________________________________________________________________________
 
         endCallBtn.setOnClickListener(v -> CallManager.hangUpCall());
@@ -215,6 +221,7 @@ public class CallActivity extends AppCompatActivity {
 
         incomingCallerPhoneNumberTV = findViewById(R.id.incomingCallerPhoneNumberTV);
         incomingCallerNameTV = findViewById(R.id.incomingCallerNameTV);
+        ringingStatusTV = findViewById(R.id.ringingStatus);
     }
 
     private void addLockScreenFlags() {

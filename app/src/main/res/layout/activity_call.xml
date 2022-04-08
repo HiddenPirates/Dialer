@@ -183,7 +183,7 @@
         android:layout_height="match_parent"
         android:padding="10dp"
         android:layout_marginTop="40dp"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"

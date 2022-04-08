@@ -10,11 +10,14 @@ import android.widget.Toast;
 import com.hiddenpirates.dialer.activities.MainActivity;
 import com.hiddenpirates.dialer.activities.CallActivity;
 import com.hiddenpirates.dialer.helpers.CallManager;
+import com.hiddenpirates.dialer.helpers.Constant;
 import com.hiddenpirates.dialer.helpers.NotificationHelper;
 
 public class CallService extends InCallService {
 
     int call_state;
+    String phone_number;
+
     @Override
     public void onCallAdded(Call call) {
         super.onCallAdded(call);
@@ -33,25 +36,24 @@ public class CallService extends InCallService {
         }
 
         CallManager.HP_CALL_STATE = call_state;
+        phone_number = call.getDetails().getHandle().getSchemeSpecificPart();
 
         if (call_state == Call.STATE_RINGING){
 
             Intent intent = new Intent(this, CallActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra("phoneNumber", call.getDetails().getHandle().getSchemeSpecificPart());
+            intent.putExtra("phoneNumber", phone_number);
+            intent.putExtra("callState", Constant.HP_CALL_STATE_INCOMING);
             startActivity(intent);
 
             NotificationHelper.createIncomingNotification(this,"(Unknown)", call.getDetails().getHandle().getSchemeSpecificPart());
         }
         else if (call_state == Call.STATE_CONNECTING || call_state == Call.STATE_DIALING){
 
-            Toast.makeText(this, "Outgoing call", Toast.LENGTH_SHORT).show();
-            Log.d(MainActivity.TAG, "onCallAdded: Nur Alam");
-
             Intent intent = new Intent(this, CallActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra("phoneNumber", call.getDetails().getHandle().getSchemeSpecificPart());
-            intent.putExtra("dialing", true);
+            intent.putExtra("phoneNumber", phone_number);
+            intent.putExtra("callState", Constant.HP_CALL_STATE_OUTGOING);
             startActivity(intent);
         }
     }
