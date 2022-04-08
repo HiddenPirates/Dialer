@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/person"
+        android:title="Recent"
+        android:icon="@drawable/ic_access_time"
+        tools:ignore="HardcodedText" />
+    <item
+        android:id="@+id/home"
+        android:title="Contacts"
+        android:icon="@drawable/ic_people_alt"
+        tools:ignore="HardcodedText" />
+    <item
+        android:id="@+id/settings"
+        android:title="Settings"
+        android:icon="@drawable/ic_settings"
+        tools:ignore="HardcodedText" />
+</menu>

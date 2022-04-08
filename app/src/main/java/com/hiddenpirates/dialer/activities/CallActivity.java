@@ -265,6 +265,10 @@ public class CallActivity extends AppCompatActivity {
             assert keypadCancelBtn != null;
             keypadCancelBtn.setOnClickListener(v1 -> keypadDialog.cancel());
 
+            FloatingActionButton endCallBottomSheet = keypadDialog.findViewById(R.id.endCallBtnBottomSheet);
+            assert endCallBottomSheet != null;
+            endCallBottomSheet.setOnClickListener(v1 -> CallManager.hangUpCall());
+
             keypadDialog.show();
         });
 

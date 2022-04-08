@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -196,6 +197,27 @@
                 android:paddingBottom="10dp"
                 android:drawableTop="@drawable/ic_hash"
                 style="?android:attr/buttonBarButtonStyle" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/endCallBtnBottomSheet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:src="@drawable/ic_call_end_red"
+                app:tint="@android:color/white"
+                android:contentDescription="End Call"
+                android:backgroundTint="@color/red"
+                app:borderWidth="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
     </LinearLayout>
 
