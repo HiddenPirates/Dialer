@@ -10,6 +10,8 @@
 
     <color name="my_theme">#078096</color>
     <color name="red">#D81406</color>
+    <color name="feature_on_color">#B80730</color>
     <color name="darkGrey">#272626</color>
+    <color name="light_grey">#888888</color>
     <color name="green">#08960E</color>
 </resources>

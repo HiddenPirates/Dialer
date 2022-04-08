@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -28,6 +27,7 @@ public class CallActivity extends AppCompatActivity {
 
     @SuppressLint("StaticFieldLeak")
     public static TextView callerNameTV, callerPhoneNumberTV, callDurationTV, callingStatusTV;
+
     @SuppressLint("StaticFieldLeak")
     public static TextView incomingCallerPhoneNumberTV, incomingCallerNameTV;
 
@@ -46,23 +46,23 @@ public class CallActivity extends AppCompatActivity {
 //        ______________________________________________________________________________
         muteBtn.setEnabled(false);
         muteBtn.setClickable(false);
-        muteBtn.setCompoundDrawableTintList(ColorStateList.valueOf(Color.parseColor("#888888")));
-        muteBtn.setTextColor(Color.parseColor("#888888"));
+        muteBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.light_grey)));
+        muteBtn.setTextColor(getColor(R.color.light_grey));
 
         holdBtn.setEnabled(false);
         holdBtn.setClickable(false);
-        holdBtn.setCompoundDrawableTintList(ColorStateList.valueOf(Color.parseColor("#888888")));
-        holdBtn.setTextColor(Color.parseColor("#888888"));
+        holdBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.light_grey)));
+        holdBtn.setTextColor(getColor(R.color.light_grey));
 
         recordBtn.setEnabled(false);
         recordBtn.setClickable(false);
-        recordBtn.setCompoundDrawableTintList(ColorStateList.valueOf(Color.parseColor("#888888")));
-        recordBtn.setTextColor(Color.parseColor("#888888"));
+        recordBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.light_grey)));
+        recordBtn.setTextColor(getColor(R.color.light_grey));
 
         addCallBtn.setEnabled(false);
         addCallBtn.setClickable(false);
-        addCallBtn.setCompoundDrawableTintList(ColorStateList.valueOf(Color.parseColor("#888888")));
-        addCallBtn.setTextColor(Color.parseColor("#888888"));
+        addCallBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.light_grey)));
+        addCallBtn.setTextColor(getColor(R.color.light_grey));
 //        ______________________________________________________________________________
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 
@@ -149,14 +149,14 @@ public class CallActivity extends AppCompatActivity {
         holdBtn.setOnClickListener(v -> {
             if (isCallOnHold){
                 CallManager.unholdCall();
-                holdBtn.setCompoundDrawableTintList(ColorStateList.valueOf(Color.parseColor("#078096")));
-                holdBtn.setTextColor(Color.parseColor("#078096"));
+                holdBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.my_theme)));
+                holdBtn.setTextColor(getColor(R.color.my_theme));
                 isCallOnHold = false;
             }
             else{
                 CallManager.holdCall();
-                holdBtn.setCompoundDrawableTintList(ColorStateList.valueOf(Color.parseColor("#B80730")));
-                holdBtn.setTextColor(Color.parseColor("#B80730"));
+                holdBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.feature_on_color)));
+                holdBtn.setTextColor(getColor(R.color.feature_on_color));
                 isCallOnHold = true;
             }
         });
@@ -164,14 +164,14 @@ public class CallActivity extends AppCompatActivity {
         muteBtn.setOnClickListener(v -> {
             if (isMuted){
                 CallManager.muteCall(false);
-                muteBtn.setCompoundDrawableTintList(ColorStateList.valueOf(Color.parseColor("#078096")));
-                muteBtn.setTextColor(Color.parseColor("#078096"));
+                muteBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.my_theme)));
+                muteBtn.setTextColor(getColor(R.color.my_theme));
                 isMuted = false;
             }
             else{
                 CallManager.muteCall(true);
-                muteBtn.setCompoundDrawableTintList(ColorStateList.valueOf(Color.parseColor("#B80730")));
-                muteBtn.setTextColor(Color.parseColor("#B80730"));
+                muteBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.feature_on_color)));
+                muteBtn.setTextColor(getColor(R.color.feature_on_color));
                 isMuted = true;
             }
         });
@@ -179,14 +179,14 @@ public class CallActivity extends AppCompatActivity {
         speakerBtn.setOnClickListener(v -> {
             if (isSpeakerOn){
                 CallManager.speakerCall(false);
-                speakerBtn.setCompoundDrawableTintList(ColorStateList.valueOf(Color.parseColor("#078096")));
-                speakerBtn.setTextColor(Color.parseColor("#078096"));
+                speakerBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.my_theme)));
+                speakerBtn.setTextColor(getColor(R.color.my_theme));
                 isSpeakerOn = false;
             }
             else{
                 CallManager.speakerCall(true);
-                speakerBtn.setCompoundDrawableTintList(ColorStateList.valueOf(Color.parseColor("#B80730")));
-                speakerBtn.setTextColor(Color.parseColor("#B80730"));
+                speakerBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.feature_on_color)));
+                speakerBtn.setTextColor(getColor(R.color.feature_on_color));
                 isSpeakerOn = true;
             }
         });
@@ -223,10 +223,10 @@ public class CallActivity extends AppCompatActivity {
 
         getWindow().addFlags(
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
-                        WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
-                        WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
         );
     }
 }
