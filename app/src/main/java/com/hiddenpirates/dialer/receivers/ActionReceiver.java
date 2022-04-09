@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import com.hiddenpirates.dialer.R;
 import com.hiddenpirates.dialer.activities.CallActivity;
+import com.hiddenpirates.dialer.helpers.CallListHelper;
 import com.hiddenpirates.dialer.helpers.CallManager;
 import com.hiddenpirates.dialer.helpers.NotificationHelper;
 
@@ -24,9 +25,9 @@ public class ActionReceiver extends BroadcastReceiver {
             String action = intent.getStringExtra("pickUpCall");
 
             if(action.equalsIgnoreCase("YES"))
-                CallManager.answerCall();
+                CallManager.answerCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
             else if(action.equalsIgnoreCase("NO"))
-                CallManager.hangUpCall();
+                CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
         }
 
         if (intentExtras.containsKey("cancelCall")){
@@ -34,7 +35,7 @@ public class ActionReceiver extends BroadcastReceiver {
             String action = intent.getStringExtra("cancelCall");
 
             if(action.equalsIgnoreCase("YES"))
-                CallManager.hangUpCall();
+                CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
         }
 
         if (intentExtras.containsKey("endCall")){
@@ -42,7 +43,7 @@ public class ActionReceiver extends BroadcastReceiver {
             String action = intent.getStringExtra("endCall");
 
             if(action.equalsIgnoreCase("YES"))
-                CallManager.hangUpCall();
+                CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
         }
 
 
@@ -67,7 +68,7 @@ public class ActionReceiver extends BroadcastReceiver {
                     CallActivity.speakerBtn.setTextColor(context.getColor(R.color.my_theme));
                     CallActivity.isSpeakerOn = false;
 
-                    NotificationHelper.createIngoingCallNotification(context, CallActivity.CALLER_NAME, CallActivity.PHONE_NUMBER, "01:12:00", "Speaker On", muteBtnName);
+                    NotificationHelper.createIngoingCallNotification(context, CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1), "01:12:00", "Speaker On", muteBtnName);
                 }
                 else{
                     CallManager.speakerCall(true);
@@ -75,7 +76,7 @@ public class ActionReceiver extends BroadcastReceiver {
                     CallActivity.speakerBtn.setTextColor(context.getColor(R.color.feature_on_color));
                     CallActivity.isSpeakerOn = true;
 
-                    NotificationHelper.createIngoingCallNotification(context, CallActivity.CALLER_NAME, CallActivity.PHONE_NUMBER, "01:12:00", "Speaker Off", muteBtnName);
+                    NotificationHelper.createIngoingCallNotification(context, CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1), "01:12:00", "Speaker Off", muteBtnName);
                 }
             }
         }
@@ -103,7 +104,7 @@ public class ActionReceiver extends BroadcastReceiver {
                     CallActivity.muteBtn.setText("Mute");
                     CallActivity.isMuted = false;
 
-                    NotificationHelper.createIngoingCallNotification(context, CallActivity.CALLER_NAME, CallActivity.PHONE_NUMBER, "01:12:00", speakerBtnName, "Mute");
+                    NotificationHelper.createIngoingCallNotification(context, CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1), "01:12:00", speakerBtnName, "Mute");
                 }
                 else{
                     CallManager.muteCall(true);
@@ -112,7 +113,7 @@ public class ActionReceiver extends BroadcastReceiver {
                     CallActivity.muteBtn.setText("Unmute");
                     CallActivity.isMuted = true;
 
-                    NotificationHelper.createIngoingCallNotification(context, CallActivity.CALLER_NAME, CallActivity.PHONE_NUMBER, "01:12:00", speakerBtnName, "Unmute");
+                    NotificationHelper.createIngoingCallNotification(context, CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1), "01:12:00", speakerBtnName, "Unmute");
                 }
             }
         }

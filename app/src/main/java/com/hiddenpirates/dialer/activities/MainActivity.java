@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS));
             }
             else {
-//                startActivity(new Intent(this, DialerActivity.class));
+                startActivity(new Intent(this, DialerActivity.class));
             }
         }
     }

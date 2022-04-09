@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.telecom.Call;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -77,8 +78,10 @@ public class NotificationHelper {
 //    _____________________________________________________________________________________________________________
 //    _____________________________________________________________________________________________________________
 
-    public static void createIngoingCallNotification(Context context, String callerName, String callerPhoneNumber, String callDuration, String speakerBtnTxt, String muteBtnTxt) {
+    public static void createIngoingCallNotification(Context context, Call call, String callDuration, String speakerBtnTxt, String muteBtnTxt) {
 
+        String callerPhoneNumber = call.getDetails().getHandle().getSchemeSpecificPart();
+        String callerName = ContactsHelper.getContactNameByPhoneNumber(callerPhoneNumber, context);
         String CHANNEL_ID = "Hidden_Pirates_Phone_App";
 
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Ingoing Call Notification", NotificationManager.IMPORTANCE_DEFAULT);
@@ -90,10 +93,9 @@ public class NotificationHelper {
 
 
         Intent ingoingCallIntent = new Intent(context, CallActivity.class);
-        ingoingCallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        ingoingCallIntent.putExtra("phoneNumber", callerPhoneNumber);
+        ingoingCallIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
         ingoingCallIntent.putExtra("callState", Constant.HP_CALL_STATE_INGOING_CALL);
-        ingoingCallIntent.putExtra("callerName", callerName);
+        ingoingCallIntent.putExtra("callNumberPosition", CallManager.NUMBER_OF_CALLS);
         ingoingCallIntent.putExtra("callDuration", callDuration);
 
         @SuppressLint("UnspecifiedImmutableFlag") PendingIntent ingoingCallPendingIntent = PendingIntent.getActivity(context, 0, ingoingCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);

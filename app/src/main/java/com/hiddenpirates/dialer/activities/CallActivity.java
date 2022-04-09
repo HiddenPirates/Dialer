@@ -14,15 +14,16 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hiddenpirates.dialer.R;
+import com.hiddenpirates.dialer.helpers.CallListHelper;
 import com.hiddenpirates.dialer.helpers.CallManager;
 import com.hiddenpirates.dialer.helpers.Constant;
+import com.hiddenpirates.dialer.helpers.ContactsHelper;
 import com.hiddenpirates.dialer.helpers.NotificationHelper;
 
 public class CallActivity extends AppCompatActivity {
@@ -56,6 +57,9 @@ public class CallActivity extends AppCompatActivity {
 
         initializeValues();
         addLockScreenFlags();
+
+        Log.d(MainActivity.TAG, "TOTAL_NUMBER_OF_CALLS: " + CallManager.NUMBER_OF_CALLS);
+        Log.d(MainActivity.TAG, "TOTAL_NUMBER_OF_CALL_OBJECT: " + CallListHelper.callList.size());
 //        ______________________________________________________________________________
         setButtonsDisabled();
 //        ______________________________________________________________________________
@@ -74,6 +78,9 @@ public class CallActivity extends AppCompatActivity {
 
                     inProgressCallRLView.setVisibility(View.VISIBLE);
                     incomingRLView.setVisibility(View.GONE);
+
+                    callerPhoneNumberTV.setText(PHONE_NUMBER);
+                    callerNameTV.setText(CALLER_NAME);
 
 //                    ------------------------------------------------------------------------------
 
@@ -94,7 +101,7 @@ public class CallActivity extends AppCompatActivity {
                     if (isSpeakerOn){
                         speakerBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.feature_on_color)));
                         speakerBtn.setTextColor(getColor(R.color.feature_on_color));
-                        NotificationHelper.createIngoingCallNotification(CallActivity.this, CALLER_NAME, PHONE_NUMBER, "01:12:00", speakerBtnName, muteBtnName);
+                        NotificationHelper.createIngoingCallNotification(CallActivity.this, CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1), "01:12:00", speakerBtnName, muteBtnName);
                     }
 //                    ------------------------------------------------------------------------------
 
@@ -104,7 +111,7 @@ public class CallActivity extends AppCompatActivity {
                         muteBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.my_theme)));
                         muteBtn.setTextColor(getColor(R.color.my_theme));
                         muteBtn.setText("Mute");
-                        NotificationHelper.createIngoingCallNotification(CallActivity.this, CALLER_NAME, PHONE_NUMBER, "01:12:00", speakerBtnName, muteBtnName);
+                        NotificationHelper.createIngoingCallNotification(CallActivity.this, CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1), "01:12:00", speakerBtnName, muteBtnName);
                     }
                     else{
                         muteBtn.setEnabled(true);
@@ -112,7 +119,7 @@ public class CallActivity extends AppCompatActivity {
                         muteBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.feature_on_color)));
                         muteBtn.setTextColor(getColor(R.color.feature_on_color));
                         muteBtn.setText("Unmute");
-                        NotificationHelper.createIngoingCallNotification(CallActivity.this, CALLER_NAME, PHONE_NUMBER, "01:12:00", speakerBtnName, muteBtnName);
+                        NotificationHelper.createIngoingCallNotification(CallActivity.this, CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1), "01:12:00", speakerBtnName, muteBtnName);
                     }
 
 
@@ -146,8 +153,8 @@ public class CallActivity extends AppCompatActivity {
         registerReceiver(broadcastReceiver, filter);
 //        ______________________________________________________________________________
 
-        callRejectBtn.setOnClickListener(v -> CallManager.hangUpCall());
-        callAnswerBtn.setOnClickListener(v -> CallManager.answerCall());
+        callRejectBtn.setOnClickListener(v -> CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1)));
+        callAnswerBtn.setOnClickListener(v -> CallManager.answerCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1)));
 //        ______________________________________________________________________________
 
         Intent intent = getIntent();
@@ -159,56 +166,68 @@ public class CallActivity extends AppCompatActivity {
           }
  **/
 
-
-        if (intentExtras.containsKey("phoneNumber"))
-            PHONE_NUMBER = intent.getStringExtra("phoneNumber");
-        else
-            PHONE_NUMBER = "Hidden Number";
-
-        if (intentExtras.containsKey("callerName")) {
-            CALLER_NAME = intent.getStringExtra("callerName");
-        }
-        else {
-            CALLER_NAME = "Private Caller";
-        }
-
-        if (intentExtras.containsKey("callState")){
+        if (intentExtras.containsKey("callState") && intentExtras.containsKey("callNumberPosition")){
 
             switch (intent.getStringExtra("callState")) {
+
                 case Constant.HP_CALL_STATE_OUTGOING:
+
                     inProgressCallRLView.setVisibility(View.VISIBLE);
                     incomingRLView.setVisibility(View.GONE);
+
+                    if (CallManager.NUMBER_OF_CALLS > 0 && CallListHelper.callList.size() > 0){
+
+                        PHONE_NUMBER = CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS -1).getDetails().getHandle().getSchemeSpecificPart();
+                        CALLER_NAME = ContactsHelper.getContactNameByPhoneNumber(PHONE_NUMBER, this);
+
+                        callerPhoneNumberTV.setText(PHONE_NUMBER);
+                        callerNameTV.setText(CALLER_NAME);
+
+                        NotificationHelper.createOutgoingNotification(this, CALLER_NAME, PHONE_NUMBER);
+                    }
                     break;
+
                 case Constant.HP_CALL_STATE_INCOMING:
+
                     inProgressCallRLView.setVisibility(View.GONE);
                     incomingRLView.setVisibility(View.VISIBLE);
+
+                    if (CallManager.NUMBER_OF_CALLS > 0 && CallListHelper.callList.size() > 0){
+
+                        PHONE_NUMBER = CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS -1).getDetails().getHandle().getSchemeSpecificPart();
+                        CALLER_NAME = ContactsHelper.getContactNameByPhoneNumber(PHONE_NUMBER, this);
+
+                        incomingCallerPhoneNumberTV.setText(PHONE_NUMBER);
+                        incomingCallerNameTV.setText(CALLER_NAME);
+
+                        NotificationHelper.createIncomingNotification(this, CALLER_NAME, PHONE_NUMBER);
+                    }
                     break;
+
                 case Constant.HP_CALL_STATE_INGOING_CALL:
+
+                    PHONE_NUMBER = CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS -1).getDetails().getHandle().getSchemeSpecificPart();
+                    CALLER_NAME = ContactsHelper.getContactNameByPhoneNumber(PHONE_NUMBER, this);
+
                     Intent broadCastIntent = new Intent("call_answered");
                     sendBroadcast(broadCastIntent);
+
                     break;
             }
-
-            Log.d(MainActivity.TAG, "onCreate: " + CallManager.HP_CALL_STATE);
         }
-
-        callerPhoneNumberTV.setText(PHONE_NUMBER);
-        callerNameTV.setText(CALLER_NAME);
-        incomingCallerPhoneNumberTV.setText(PHONE_NUMBER);
-        incomingCallerNameTV.setText(CALLER_NAME);
 //        ______________________________________________________________________________
 
-        endCallBtn.setOnClickListener(v -> CallManager.hangUpCall());
+        endCallBtn.setOnClickListener(v -> CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1)));
 
         holdBtn.setOnClickListener(v -> {
             if (isCallOnHold){
-                CallManager.unholdCall();
+                CallManager.unholdCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
                 holdBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.my_theme)));
                 holdBtn.setTextColor(getColor(R.color.my_theme));
                 isCallOnHold = false;
             }
             else{
-                CallManager.holdCall();
+                CallManager.holdCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
                 holdBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.feature_on_color)));
                 holdBtn.setTextColor(getColor(R.color.feature_on_color));
                 isCallOnHold = true;
@@ -223,7 +242,7 @@ public class CallActivity extends AppCompatActivity {
                 muteBtn.setText("Mute");
                 isMuted = false;
 
-                NotificationHelper.createIngoingCallNotification(CallActivity.this, CALLER_NAME, PHONE_NUMBER, "01:12:00", speakerBtnName, "Mute");
+                NotificationHelper.createIngoingCallNotification(CallActivity.this, CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1), "01:12:00", speakerBtnName, "Mute");
             }
             else{
                 CallManager.muteCall(true);
@@ -232,7 +251,7 @@ public class CallActivity extends AppCompatActivity {
                 muteBtn.setText("Unmute");
                 isMuted = true;
 
-                NotificationHelper.createIngoingCallNotification(CallActivity.this, CALLER_NAME, PHONE_NUMBER, "01:12:00", speakerBtnName, "Unmute");
+                NotificationHelper.createIngoingCallNotification(CallActivity.this, CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1), "01:12:00", speakerBtnName, "Unmute");
             }
         });
 
@@ -243,7 +262,7 @@ public class CallActivity extends AppCompatActivity {
                 speakerBtn.setTextColor(getColor(R.color.my_theme));
                 isSpeakerOn = false;
 
-                NotificationHelper.createIngoingCallNotification(CallActivity.this, CALLER_NAME, PHONE_NUMBER, "01:12:00", "Speaker On", muteBtnName);
+                NotificationHelper.createIngoingCallNotification(CallActivity.this, CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1), "01:12:00", "Speaker On", muteBtnName);
             }
             else{
                 CallManager.speakerCall(true);
@@ -251,7 +270,7 @@ public class CallActivity extends AppCompatActivity {
                 speakerBtn.setTextColor(getColor(R.color.feature_on_color));
                 isSpeakerOn = true;
 
-                NotificationHelper.createIngoingCallNotification(CallActivity.this, CALLER_NAME, PHONE_NUMBER, "01:12:00", "Speaker Off", muteBtnName);
+                NotificationHelper.createIngoingCallNotification(CallActivity.this, CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1), "01:12:00", "Speaker Off", muteBtnName);
             }
         });
 
@@ -267,12 +286,12 @@ public class CallActivity extends AppCompatActivity {
 
             FloatingActionButton endCallBottomSheet = keypadDialog.findViewById(R.id.endCallBtnBottomSheet);
             assert endCallBottomSheet != null;
-            endCallBottomSheet.setOnClickListener(v1 -> CallManager.hangUpCall());
+            endCallBottomSheet.setOnClickListener(v1 -> CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1)));
 
             keypadDialog.show();
         });
 
-        addCallBtn.setOnClickListener(v -> Toast.makeText(this, "This feature is not implemented yet!", Toast.LENGTH_SHORT).show());
+        addCallBtn.setOnClickListener(v -> startActivity(new Intent(this, DialerActivity.class)));
     }
 
 

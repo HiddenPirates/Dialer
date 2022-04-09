@@ -1,7 +1,6 @@
 package com.hiddenpirates.dialer.helpers;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.telecom.Call;
 import android.telecom.CallAudioState;
@@ -13,84 +12,79 @@ import android.widget.Toast;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.hiddenpirates.dialer.R;
-import com.hiddenpirates.dialer.activities.MainActivity;
 import com.hiddenpirates.dialer.activities.CallActivity;
+import com.hiddenpirates.dialer.activities.MainActivity;
 
 public class CallManager {
 
-    public static Call call;
-    public Context context;
+    public static int NUMBER_OF_CALLS = 0;
+
     @SuppressLint("StaticFieldLeak")
     public static InCallService inCallService;
-    public static int HP_CALL_STATE;
 
-    Call.Callback callback = new Call.Callback(){
+    public static Call.Callback callback = new Call.Callback(){
         @SuppressLint("SetTextI18n")
         @Override
         public void onStateChanged(Call call, int newState) {
 
             Log.d(MainActivity.TAG, "onStateChanged: " + newState);
 
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            HP_CALL_STATE = newState;
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(inCallService);
 
             if (newState == Call.STATE_ACTIVE){
 
                 Intent broadCastIntent = new Intent("call_answered");
-                context.sendBroadcast(broadCastIntent);
+                inCallService.sendBroadcast(broadCastIntent);
 
                 notificationManager.cancel(NotificationHelper.NOTIFICATION_ID);
-                NotificationHelper.createIngoingCallNotification(context, CallActivity.CALLER_NAME, CallActivity.PHONE_NUMBER, "00:12:45", CallActivity.speakerBtnName, CallActivity.muteBtnName);
+                NotificationHelper.createIngoingCallNotification(inCallService, CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1), "00:12:45", CallActivity.speakerBtnName, CallActivity.muteBtnName);
             }
             else if (newState == Call.STATE_DISCONNECTED){
 
                 call.unregisterCallback(callback);
 
                 Intent intent = new Intent("call_ended");
-                context.sendBroadcast(intent);
+                inCallService.sendBroadcast(intent);
 
                 CallActivity.isSpeakerOn = false;
 
                 notificationManager.cancel(NotificationHelper.NOTIFICATION_ID);
+
+                CallListHelper.callList.remove(NUMBER_OF_CALLS - 1);
+                NUMBER_OF_CALLS = NUMBER_OF_CALLS - 1;
             }
             else if (newState == Call.STATE_DISCONNECTING){
 
                 CallActivity.callingStatusTV.setText("Disconnected");
-                CallActivity.callingStatusTV.setTextColor(context.getColor(R.color.red));
+                CallActivity.callingStatusTV.setTextColor(inCallService.getColor(R.color.red));
 
                 CallActivity.ringingStatusTV.setText("Rejected");
-                CallActivity.ringingStatusTV.setTextColor(context.getColor(R.color.red));
+                CallActivity.ringingStatusTV.setTextColor(inCallService.getColor(R.color.red));
             }
             else if (newState == Call.STATE_HOLDING){
 
                 CallActivity.callingStatusTV.setText("Call on hold");
-                CallActivity.callingStatusTV.setTextColor(context.getColor(R.color.red));
+                CallActivity.callingStatusTV.setTextColor(inCallService.getColor(R.color.red));
+                Log.d(MainActivity.TAG, "HOLD: " + call.getDetails().getHandle().getSchemeSpecificPart());
             }
         }
     };
 
-    public void setValues(Call call, Context context) {
-        CallManager.call = call;
-        call.registerCallback(callback);
-
-        this.context = context;
+    public static void answerCall(Call mCall){
+        mCall.answer(VideoProfile.STATE_AUDIO_ONLY);
     }
 
-    public static void answerCall(){
-        call.answer(VideoProfile.STATE_AUDIO_ONLY);
+    public static void hangUpCall(Call mCall){
+        mCall.disconnect();
     }
 
-    public static void hangUpCall(){
-        call.disconnect();
-    }
-
-    public static void holdCall(){
-        call.hold();
+    public static void holdCall(Call mCall){
+        mCall.hold();
         Toast.makeText(inCallService, "Call on hold", Toast.LENGTH_SHORT).show();
     }
 
-    public static void unholdCall(){
-        call.unhold();
+    public static void unholdCall(Call mCall){
+        mCall.unhold();
         Toast.makeText(inCallService, "Call on unhold", Toast.LENGTH_SHORT).show();
     }
 
