@@ -22,12 +22,16 @@ public class CallManager {
     @SuppressLint("StaticFieldLeak")
     public static InCallService inCallService;
 
+    public static int HP_CALL_STATE = 0;
+
     public static Call.Callback callback = new Call.Callback(){
         @SuppressLint("SetTextI18n")
         @Override
         public void onStateChanged(Call call, int newState) {
 
             Log.d(MainActivity.TAG, "onStateChanged: " + newState);
+
+            HP_CALL_STATE = newState;
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(inCallService);
 

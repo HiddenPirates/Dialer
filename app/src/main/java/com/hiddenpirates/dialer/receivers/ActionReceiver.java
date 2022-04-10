@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.hiddenpirates.dialer.R;
 import com.hiddenpirates.dialer.activities.CallActivity;
+import com.hiddenpirates.dialer.activities.MainActivity;
 import com.hiddenpirates.dialer.helpers.CallListHelper;
 import com.hiddenpirates.dialer.helpers.CallManager;
 import com.hiddenpirates.dialer.helpers.NotificationHelper;
@@ -19,20 +21,24 @@ public class ActionReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        Log.d(MainActivity.TAG, "onReceive222: "); // Debugging
+
         Bundle intentExtras = intent.getExtras();
+
+        for (String k: intentExtras.keySet()) {
+            Log.d(MainActivity.TAG, "onReceive333 intent: " + k); // Debugging
+        }
 
         if (intentExtras.containsKey("pickUpCall")){
 
+            Log.d(MainActivity.TAG, "onReceive333: "); // Debugging
+
             String action = intent.getStringExtra("pickUpCall");
 
+            Log.d(MainActivity.TAG, "onReceive444: " + action); // Debugging
+
             if(action.equalsIgnoreCase("YES")){
-
                 CallManager.answerCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
-
-//                Intent intent1 = new Intent(context, CallActivity.class);
-//                intent1.putExtra("callState", Constant.HP_CALL_STATE_INGOING_CALL);
-//                intent1.putExtra("callNumberPosition", CallManager.NUMBER_OF_CALLS);
-//                context.startActivity(intent1);
             }
             else if(action.equalsIgnoreCase("NO")){
                 CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
