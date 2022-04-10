@@ -176,6 +176,7 @@
                     android:textSize="11sp"
                     android:paddingTop="10dp"
                     android:textColor="@color/my_theme"
+                    android:visibility="gone"
                     tools:ignore="HardcodedText" />
             </LinearLayout>
         </LinearLayout>
