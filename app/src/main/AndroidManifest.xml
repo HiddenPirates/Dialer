@@ -19,6 +19,7 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:showOnLockScreen="true"
+            android:launchMode="singleInstance"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activities.DialerActivity"

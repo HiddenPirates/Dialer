@@ -39,6 +39,14 @@ public class CallManager {
                 notificationManager.cancel(NotificationHelper.NOTIFICATION_ID);
                 NotificationHelper.createIngoingCallNotification(inCallService, CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1), "00:12:45", CallActivity.speakerBtnName, CallActivity.muteBtnName);
             }
+            else if (newState == Call.STATE_DISCONNECTING){
+
+                CallActivity.callingStatusTV.setText("Disconnected");
+                CallActivity.callingStatusTV.setTextColor(inCallService.getColor(R.color.red));
+
+                CallActivity.ringingStatusTV.setText("Rejected");
+                CallActivity.ringingStatusTV.setTextColor(inCallService.getColor(R.color.red));
+            }
             else if (newState == Call.STATE_DISCONNECTED){
 
                 call.unregisterCallback(callback);
@@ -52,14 +60,8 @@ public class CallManager {
 
                 CallListHelper.callList.remove(NUMBER_OF_CALLS - 1);
                 NUMBER_OF_CALLS = NUMBER_OF_CALLS - 1;
-            }
-            else if (newState == Call.STATE_DISCONNECTING){
-
-                CallActivity.callingStatusTV.setText("Disconnected");
-                CallActivity.callingStatusTV.setTextColor(inCallService.getColor(R.color.red));
-
-                CallActivity.ringingStatusTV.setText("Rejected");
-                CallActivity.ringingStatusTV.setTextColor(inCallService.getColor(R.color.red));
+                CallActivity.isMuted = false;
+                CallActivity.isSpeakerOn = false;
             }
             else if (newState == Call.STATE_HOLDING){
 

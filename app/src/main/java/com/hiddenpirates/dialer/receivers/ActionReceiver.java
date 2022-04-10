@@ -14,6 +14,7 @@ import com.hiddenpirates.dialer.helpers.CallManager;
 import com.hiddenpirates.dialer.helpers.NotificationHelper;
 
 public class ActionReceiver extends BroadcastReceiver {
+
     @SuppressLint({"UseCompatTextViewDrawableApis", "SetTextI18n"})
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -24,10 +25,18 @@ public class ActionReceiver extends BroadcastReceiver {
 
             String action = intent.getStringExtra("pickUpCall");
 
-            if(action.equalsIgnoreCase("YES"))
+            if(action.equalsIgnoreCase("YES")){
+
                 CallManager.answerCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
-            else if(action.equalsIgnoreCase("NO"))
+
+//                Intent intent1 = new Intent(context, CallActivity.class);
+//                intent1.putExtra("callState", Constant.HP_CALL_STATE_INGOING_CALL);
+//                intent1.putExtra("callNumberPosition", CallManager.NUMBER_OF_CALLS);
+//                context.startActivity(intent1);
+            }
+            else if(action.equalsIgnoreCase("NO")){
                 CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
+            }
         }
 
         if (intentExtras.containsKey("cancelCall")){

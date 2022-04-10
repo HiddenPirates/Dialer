@@ -183,7 +183,7 @@ public class CallActivity extends AppCompatActivity {
                         callerPhoneNumberTV.setText(PHONE_NUMBER);
                         callerNameTV.setText(CALLER_NAME);
 
-                        NotificationHelper.createOutgoingNotification(this, CALLER_NAME, PHONE_NUMBER);
+                        NotificationHelper.createOutgoingNotification(this, CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
                     }
                     break;
 
@@ -200,7 +200,7 @@ public class CallActivity extends AppCompatActivity {
                         incomingCallerPhoneNumberTV.setText(PHONE_NUMBER);
                         incomingCallerNameTV.setText(CALLER_NAME);
 
-                        NotificationHelper.createIncomingNotification(this, CALLER_NAME, PHONE_NUMBER);
+                        NotificationHelper.createIncomingNotification(this, CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
                     }
                     break;
 
@@ -209,9 +209,11 @@ public class CallActivity extends AppCompatActivity {
                     PHONE_NUMBER = CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS -1).getDetails().getHandle().getSchemeSpecificPart();
                     CALLER_NAME = ContactsHelper.getContactNameByPhoneNumber(PHONE_NUMBER, this);
 
+                    Log.d(MainActivity.TAG, "o0000000");
                     Intent broadCastIntent = new Intent("call_answered");
                     sendBroadcast(broadCastIntent);
 
+                    Log.d(MainActivity.TAG, "NurALAM");
                     break;
             }
         }
@@ -293,7 +295,6 @@ public class CallActivity extends AppCompatActivity {
 
         addCallBtn.setOnClickListener(v -> startActivity(new Intent(this, DialerActivity.class)));
     }
-
 
     private void initializeValues() {
         endCallBtn = findViewById(R.id.endCallBtn);

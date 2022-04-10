@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:id="@+id/inProgressCallRLView"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -24,10 +24,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/callerName"
-                android:textSize="20sp"
+                android:textSize="25sp"
                 android:textColor="@color/black"
                 android:textAlignment="center"
-                android:text="Nur Alam"
+                android:text="Nur Alam (Demo Name)"
                 tools:ignore="HardcodedText" />
             <TextView
                 android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                 android:textAlignment="center"
                 android:paddingBottom="20dp"
                 android:paddingTop="20dp"
-                android:text="+918348313317"
+                android:text="+918348313317 (Demo Number)"
                 tools:ignore="HardcodedText" />
             <TextView
                 android:layout_width="match_parent"
@@ -153,6 +153,26 @@
                     android:background="?android:attr/selectableItemBackground"
                     android:drawableTop="@drawable/ic_add_ic_call"
                     android:text="Add Call"
+                    android:textSize="11sp"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/my_theme"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="3">
+                <Button
+                    android:id="@+id/mergeCallBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableTop="@drawable/ic_call_merge"
+                    android:text="Merge"
                     android:textSize="11sp"
                     android:paddingTop="10dp"
                     android:textColor="@color/my_theme"

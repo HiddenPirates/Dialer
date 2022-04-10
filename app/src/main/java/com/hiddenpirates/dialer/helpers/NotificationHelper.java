@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.telecom.Call;
 
 import androidx.core.app.NotificationCompat;
@@ -23,9 +24,13 @@ public class NotificationHelper {
 
     public static int NOTIFICATION_ID = 834831;
 
-    public static void createIncomingNotification(Context context, String callerName, String callerPhoneNumber) {
-        String CHANNEL_ID = "Hidden_Pirates_Phone_App";
+    @SuppressLint({"UnspecifiedImmutableFlag"})
+    public static void createIncomingNotification(Context context, Call call) {
 
+        String callerPhoneNumber = call.getDetails().getHandle().getSchemeSpecificPart();
+        String callerName = ContactsHelper.getContactNameByPhoneNumber(callerPhoneNumber, context);
+
+        String CHANNEL_ID = "Hidden_Pirates_Phone_App";
 
         Uri ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
 
@@ -42,20 +47,42 @@ public class NotificationHelper {
 
         Intent incomingCallIntent = new Intent(context, CallActivity.class);
         incomingCallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        incomingCallIntent.putExtra("phoneNumber", callerPhoneNumber);
         incomingCallIntent.putExtra("callState", Constant.HP_CALL_STATE_INCOMING);
-        incomingCallIntent.putExtra("callerName", callerName);
+        incomingCallIntent.putExtra("callNumberPosition", CallManager.NUMBER_OF_CALLS);
 
-        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent incomingCallPendingIntent = PendingIntent.getActivity(context, 0, incomingCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent incomingCallPendingIntent;
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            incomingCallPendingIntent = PendingIntent.getActivity(context, 0, incomingCallIntent, PendingIntent.FLAG_MUTABLE);
+        }
+        else{
+            incomingCallPendingIntent = PendingIntent.getActivity(context, 0, incomingCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
 
         Intent answerCallIntent = new Intent(context, ActionReceiver.class);
         answerCallIntent.putExtra("pickUpCall", "YES");
-        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pickUpCallYesPendingIntent = PendingIntent.getBroadcast(context, 1, answerCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        PendingIntent pickUpCallYesPendingIntent;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            pickUpCallYesPendingIntent = PendingIntent.getBroadcast(context, 1, answerCallIntent, PendingIntent.FLAG_IMMUTABLE);
+        }
+        else{
+            pickUpCallYesPendingIntent = PendingIntent.getBroadcast(context, 1, answerCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
 
         Intent rejectCallIntent = new Intent(context, ActionReceiver.class);
         rejectCallIntent.putExtra("pickUpCall", "NO");
-        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pickUpCallNoPendingIntent = PendingIntent.getBroadcast(context, 2, rejectCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        PendingIntent pickUpCallNoPendingIntent;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            pickUpCallNoPendingIntent = PendingIntent.getBroadcast(context, 2, rejectCallIntent, PendingIntent.FLAG_IMMUTABLE);
+        }
+        else{
+            pickUpCallNoPendingIntent = PendingIntent.getBroadcast(context, 2, rejectCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
         builder.setOngoing(true);
@@ -78,6 +105,7 @@ public class NotificationHelper {
 //    _____________________________________________________________________________________________________________
 //    _____________________________________________________________________________________________________________
 
+    @SuppressLint({"UnspecifiedImmutableFlag"})
     public static void createIngoingCallNotification(Context context, Call call, String callDuration, String speakerBtnTxt, String muteBtnTxt) {
 
         String callerPhoneNumber = call.getDetails().getHandle().getSchemeSpecificPart();
@@ -98,22 +126,53 @@ public class NotificationHelper {
         ingoingCallIntent.putExtra("callNumberPosition", CallManager.NUMBER_OF_CALLS);
         ingoingCallIntent.putExtra("callDuration", callDuration);
 
-        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent ingoingCallPendingIntent = PendingIntent.getActivity(context, 0, ingoingCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent ingoingCallPendingIntent;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            ingoingCallPendingIntent = PendingIntent.getActivity(context, 0, ingoingCallIntent, PendingIntent.FLAG_MUTABLE);
+        }
+        else {
+            ingoingCallPendingIntent = PendingIntent.getActivity(context, 0, ingoingCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
 
 
         Intent endCallIntent = new Intent(context, ActionReceiver.class);
         endCallIntent.putExtra("endCall", "YES");
-        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent endCallPendingIntent = PendingIntent.getBroadcast(context, 1, endCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        PendingIntent endCallPendingIntent;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            endCallPendingIntent = PendingIntent.getBroadcast(context, 1, endCallIntent, PendingIntent.FLAG_MUTABLE);
+        }
+        else {
+            endCallPendingIntent = PendingIntent.getBroadcast(context, 1, endCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
 
 
         Intent speakerCallIntent = new Intent(context, ActionReceiver.class);
         speakerCallIntent.putExtra("speakerCall", "YES");
-        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent speakerCallPendingIntent = PendingIntent.getBroadcast(context, 2, speakerCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        PendingIntent speakerCallPendingIntent;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            speakerCallPendingIntent = PendingIntent.getBroadcast(context, 2, speakerCallIntent, PendingIntent.FLAG_MUTABLE);
+        }
+        else {
+            speakerCallPendingIntent = PendingIntent.getBroadcast(context, 2, speakerCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
 
 
         Intent muteCallIntent = new Intent(context, ActionReceiver.class);
         muteCallIntent.putExtra("muteCall", "YES");
-        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent muteCallPendingIntent = PendingIntent.getBroadcast(context, 3, muteCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        PendingIntent muteCallPendingIntent;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            muteCallPendingIntent = PendingIntent.getBroadcast(context, 3, muteCallIntent, PendingIntent.FLAG_MUTABLE);
+        }
+        else{
+            muteCallPendingIntent = PendingIntent.getBroadcast(context, 3, muteCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
         builder.setOngoing(true);
@@ -139,7 +198,11 @@ public class NotificationHelper {
 //    _____________________________________________________________________________________________________________
 //    _____________________________________________________________________________________________________________
 
-    public static void createOutgoingNotification(Context context, String callerName, String callerPhoneNumber) {
+    @SuppressLint({"UnspecifiedImmutableFlag"})
+    public static void createOutgoingNotification(Context context, Call call) {
+
+        String callerPhoneNumber = call.getDetails().getHandle().getSchemeSpecificPart();
+        String callerName = ContactsHelper.getContactNameByPhoneNumber(callerPhoneNumber, context);
 
         String CHANNEL_ID = "Hidden_Pirates_Phone_App";
 
@@ -152,17 +215,30 @@ public class NotificationHelper {
 
         Intent outingCallIntent = new Intent(context, CallActivity.class);
         outingCallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        outingCallIntent.putExtra("phoneNumber", callerPhoneNumber);
+        outingCallIntent.putExtra("callNumberPosition", CallManager.NUMBER_OF_CALLS);
         outingCallIntent.putExtra("callState", Constant.HP_CALL_STATE_OUTGOING);
-        outingCallIntent.putExtra("callerName", callerName);
 
-        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent outgoingCallPendingIntent = PendingIntent.getActivity(context, 0, outingCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent outgoingCallPendingIntent;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            outgoingCallPendingIntent = PendingIntent.getActivity(context, 0, outingCallIntent, PendingIntent.FLAG_IMMUTABLE);
+        }
+        else {
+            outgoingCallPendingIntent = PendingIntent.getActivity(context, 0, outingCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
 
 
         Intent cancelCallIntent = new Intent(context, ActionReceiver.class);
         cancelCallIntent.putExtra("cancelCall", "YES");
-        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pickUpCallYesPendingIntent = PendingIntent.getBroadcast(context, 1, cancelCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        PendingIntent pickUpCallYesPendingIntent;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            pickUpCallYesPendingIntent = PendingIntent.getBroadcast(context, 1, cancelCallIntent, PendingIntent.FLAG_MUTABLE);
+        }
+        else{
+            pickUpCallYesPendingIntent = PendingIntent.getBroadcast(context, 1, cancelCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
         builder.setOngoing(true);
