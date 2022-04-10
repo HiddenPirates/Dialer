@@ -91,7 +91,7 @@ public class CallManager {
 
     public static void unholdCall(Call mCall){
         mCall.unhold();
-        Toast.makeText(inCallService, "Call on unhold", Toast.LENGTH_SHORT).show();
+        Toast.makeText(inCallService, "Call unhold", Toast.LENGTH_SHORT).show();
     }
 
     public static void muteCall(boolean isMuted) {

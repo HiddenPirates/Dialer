@@ -125,42 +125,6 @@ public class CallActivity extends AppCompatActivity {
 
 
 
-                    if (CallListHelper.callList.size() >= 2){
-
-                        mergeCallBtn.setVisibility(View.VISIBLE);
-
-                        holdBtn.setEnabled(false);
-                        holdBtn.setClickable(false);
-                        holdBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.light_grey)));
-                        holdBtn.setTextColor(getColor(R.color.light_grey));
-
-                        addCallBtn.setEnabled(false);
-                        addCallBtn.setClickable(false);
-                        addCallBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.light_grey)));
-                        addCallBtn.setTextColor(getColor(R.color.light_grey));
-                    }
-                    else{
-
-                        holdBtn.setEnabled(true);
-                        holdBtn.setClickable(true);
-
-                        if (CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1).getDetails().getState() == Call.STATE_HOLDING){
-                            holdBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.feature_on_color)));
-                            holdBtn.setTextColor(getColor(R.color.feature_on_color));
-                        }
-                        else{
-                            holdBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.my_theme)));
-                            holdBtn.setTextColor(getColor(R.color.my_theme));
-                        }
-
-                        addCallBtn.setEnabled(true);
-                        addCallBtn.setClickable(true);
-                        addCallBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.my_theme)));
-                        addCallBtn.setTextColor(getColor(R.color.my_theme));
-                    }
-
-
-
                     if (!isRecordingCall){
                         recordBtn.setEnabled(true);
                         recordBtn.setClickable(true);
@@ -260,12 +224,52 @@ public class CallActivity extends AppCompatActivity {
         });
 
         addCallBtn.setOnClickListener(v -> startActivity(new Intent(this, DialerActivity.class)));
+
+        mergeCallBtn.setOnClickListener(v -> {
+            CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 2).conference(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
+        });
     }
 
     @SuppressLint("UseCompatTextViewDrawableApis")
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (CallListHelper.callList.size() >= 2){
+
+            mergeCallBtn.setVisibility(View.VISIBLE);
+
+            holdBtn.setEnabled(false);
+            holdBtn.setClickable(false);
+            holdBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.light_grey)));
+            holdBtn.setTextColor(getColor(R.color.light_grey));
+
+            addCallBtn.setEnabled(false);
+            addCallBtn.setClickable(false);
+            addCallBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.light_grey)));
+            addCallBtn.setTextColor(getColor(R.color.light_grey));
+        }
+        else{
+
+            holdBtn.setEnabled(true);
+            holdBtn.setClickable(true);
+
+            if (CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1).getDetails().getState() == Call.STATE_HOLDING){
+                holdBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.feature_on_color)));
+                holdBtn.setTextColor(getColor(R.color.feature_on_color));
+            }
+            else{
+                holdBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.my_theme)));
+                holdBtn.setTextColor(getColor(R.color.my_theme));
+            }
+
+            addCallBtn.setEnabled(true);
+            addCallBtn.setClickable(true);
+            addCallBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.my_theme)));
+            addCallBtn.setTextColor(getColor(R.color.my_theme));
+        }
+
+
 
         int call_state = CallManager.HP_CALL_STATE;
 

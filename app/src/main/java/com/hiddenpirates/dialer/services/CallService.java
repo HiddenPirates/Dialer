@@ -20,6 +20,7 @@ public class CallService extends InCallService {
         super.onCallAdded(call);
 
         Log.d(MainActivity.TAG, "onCallAdded: Service");
+        Log.d(MainActivity.TAG, "onCallAdded: Call Details: " + call.getDetails().toString());
 
         CallListHelper.callList.add(call);
         CallManager.inCallService = this;
@@ -53,12 +54,5 @@ public class CallService extends InCallService {
     public void onCallRemoved(Call call) {
         Toast.makeText(this, "Call ended "+call.getDetails().getHandle().getSchemeSpecificPart(), Toast.LENGTH_SHORT).show();
         Log.d(MainActivity.TAG, "onCallRemoved: " + call.getDetails().getDisconnectCause().toString());
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        Log.d(MainActivity.TAG, "onCreate: Service");
     }
 }
