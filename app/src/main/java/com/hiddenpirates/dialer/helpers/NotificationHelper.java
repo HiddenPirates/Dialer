@@ -47,14 +47,14 @@ public class NotificationHelper {
 
         PendingIntent incomingCallPendingIntent;
 
-        incomingCallPendingIntent = PendingIntent.getActivity(context, 0, incomingCallIntent, PendingIntent.FLAG_IMMUTABLE);
+        incomingCallPendingIntent = PendingIntent.getActivity(context, 0, incomingCallIntent, PendingIntent.FLAG_MUTABLE);
 
         Intent answerCallIntent = new Intent(context, ActionReceiver.class);
         answerCallIntent.putExtra("pickUpCall", "YES");
 
         PendingIntent pickUpCallYesPendingIntent;
 
-        pickUpCallYesPendingIntent = PendingIntent.getBroadcast(context, 1, answerCallIntent, PendingIntent.FLAG_IMMUTABLE);
+        pickUpCallYesPendingIntent = PendingIntent.getBroadcast(context, 1, answerCallIntent, PendingIntent.FLAG_MUTABLE);
 
 
         Intent rejectCallIntent = new Intent(context, ActionReceiver.class);

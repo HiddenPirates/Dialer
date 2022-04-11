@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hiddenpirates.dialer.R;
@@ -34,6 +35,11 @@ public class CallActivity extends AppCompatActivity {
     public static Button muteBtn, keypadBtn, speakerBtn, holdBtn, recordBtn, addCallBtn, mergeCallBtn;
 
     Button callAnswerBtn, callRejectBtn;
+
+    Button btn0, btn01, btn02, btn03, btn04, btn05, btn06, btn07, btn08, btn09, btnStar, btnHash;
+
+    BottomSheetDialog keypadDialog;
+    String keypadDialogTextViewText = "";
 
     @SuppressLint("StaticFieldLeak")
     public static TextView callerNameTV, callerPhoneNumberTV, callDurationTV, callingStatusTV;
@@ -217,9 +223,10 @@ public class CallActivity extends AppCompatActivity {
 
         keypadBtn.setOnClickListener(v -> {
 
-            BottomSheetDialog keypadDialog = new BottomSheetDialog(CallActivity.this);
+            keypadDialog = new BottomSheetDialog(CallActivity.this);
             keypadDialog.setContentView(R.layout.in_progress_call_dialpad);
             keypadDialog.setCanceledOnTouchOutside(true);
+            keypadDialog.getBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
 
             ImageButton keypadCancelBtn = keypadDialog.findViewById(R.id.keypadCancelBtn);
             assert keypadCancelBtn != null;
@@ -228,6 +235,8 @@ public class CallActivity extends AppCompatActivity {
             FloatingActionButton endCallBottomSheet = keypadDialog.findViewById(R.id.endCallBtnBottomSheet);
             assert endCallBottomSheet != null;
             endCallBottomSheet.setOnClickListener(v1 -> CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1)));
+
+            initBottomSheetBtnsAndPlayDTMFtones(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1), keypadDialog, keypadDialog.findViewById(R.id.keypadDialogTextView));
 
             keypadDialog.show();
         });
@@ -238,6 +247,9 @@ public class CallActivity extends AppCompatActivity {
             CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 2).conference(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
             CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1).mergeConference();
         });
+
+//        ------------------------------------------------------------------------------------------
+//        ------------------------------------------------------------------------------------------
     }
 
     @SuppressLint("UseCompatTextViewDrawableApis")
@@ -301,15 +313,6 @@ public class CallActivity extends AppCompatActivity {
         }
         else if (call_state == Call.STATE_ACTIVE || call_state == Call.STATE_HOLDING){
 
-            if (CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS -1).getDetails().hasProperty(Call.Details.PROPERTY_CONFERENCE)){
-                PHONE_NUMBER = "Conference";
-                CALLER_NAME = "Conference";
-            }
-            else{
-                PHONE_NUMBER = CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS -1).getDetails().getHandle().getSchemeSpecificPart();
-                CALLER_NAME = ContactsHelper.getContactNameByPhoneNumber(PHONE_NUMBER, this);
-            }
-
             Intent broadCastIntent = new Intent("call_answered");
             sendBroadcast(broadCastIntent);
         }
@@ -328,6 +331,15 @@ public class CallActivity extends AppCompatActivity {
 
                 NotificationHelper.createIncomingNotification(this, CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
             }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (keypadDialog.isShowing()){
+            keypadDialog.dismiss();
         }
     }
 
@@ -356,6 +368,84 @@ public class CallActivity extends AppCompatActivity {
         incomingCallerPhoneNumberTV = findViewById(R.id.incomingCallerPhoneNumberTV);
         incomingCallerNameTV = findViewById(R.id.incomingCallerNameTV);
         ringingStatusTV = findViewById(R.id.ringingStatus);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void initBottomSheetBtnsAndPlayDTMFtones(Call call, BottomSheetDialog keypadDialog, TextView keypadDialogTextView) {
+
+        btn0 = keypadDialog.findViewById(R.id.btn0);
+        btn01 = keypadDialog.findViewById(R.id.btn01);
+        btn02 = keypadDialog.findViewById(R.id.btn02);
+        btn03 = keypadDialog.findViewById(R.id.btn03);
+        btn04 = keypadDialog.findViewById(R.id.btn04);
+        btn05 = keypadDialog.findViewById(R.id.btn05);
+        btn06 = keypadDialog.findViewById(R.id.btn06);
+        btn07 = keypadDialog.findViewById(R.id.btn07);
+        btn08 = keypadDialog.findViewById(R.id.btn08);
+        btn09 = keypadDialog.findViewById(R.id.btn09);
+        btnStar = keypadDialog.findViewById(R.id.btnStar);
+        btnHash = keypadDialog.findViewById(R.id.btnHash);
+
+        btn0.setOnClickListener(v -> {
+            CallManager.playDtmfTone(call, '0');
+            keypadDialogTextViewText = keypadDialogTextView.getText().toString();
+            keypadDialogTextView.setText(keypadDialogTextViewText + "0");
+        });
+        btn01.setOnClickListener(v -> {
+            CallManager.playDtmfTone(call, '1');
+            keypadDialogTextViewText = keypadDialogTextView.getText().toString();
+            keypadDialogTextView.setText(keypadDialogTextViewText + "1");
+        });
+        btn02.setOnClickListener(v -> {
+            CallManager.playDtmfTone(call, '2');
+            keypadDialogTextViewText = keypadDialogTextView.getText().toString();
+            keypadDialogTextView.setText(keypadDialogTextViewText + "2");
+        });
+        btn03.setOnClickListener(v -> {
+            CallManager.playDtmfTone(call, '3');
+            keypadDialogTextViewText = keypadDialogTextView.getText().toString();
+            keypadDialogTextView.setText(keypadDialogTextViewText + "3");
+        });
+        btn04.setOnClickListener(v -> {
+            CallManager.playDtmfTone(call, '4');
+            keypadDialogTextViewText = keypadDialogTextView.getText().toString();
+            keypadDialogTextView.setText(keypadDialogTextViewText + "4");
+        });
+        btn05.setOnClickListener(v -> {
+            CallManager.playDtmfTone(call, '5');
+            keypadDialogTextViewText = keypadDialogTextView.getText().toString();
+            keypadDialogTextView.setText(keypadDialogTextViewText + "5");
+        });
+        btn06.setOnClickListener(v -> {
+            CallManager.playDtmfTone(call, '6');
+            keypadDialogTextViewText = keypadDialogTextView.getText().toString();
+            keypadDialogTextView.setText(keypadDialogTextViewText + "6");
+        });
+        btn07.setOnClickListener(v -> {
+            CallManager.playDtmfTone(call, '7');
+            keypadDialogTextViewText = keypadDialogTextView.getText().toString();
+            keypadDialogTextView.setText(keypadDialogTextViewText + "7");
+        });
+        btn08.setOnClickListener(v -> {
+            CallManager.playDtmfTone(call, '8');
+            keypadDialogTextViewText = keypadDialogTextView.getText().toString();
+            keypadDialogTextView.setText(keypadDialogTextViewText + "8");
+        });
+        btn09.setOnClickListener(v -> {
+            CallManager.playDtmfTone(call, '9');
+            keypadDialogTextViewText = keypadDialogTextView.getText().toString();
+            keypadDialogTextView.setText(keypadDialogTextViewText + "9");
+        });
+        btnStar.setOnClickListener(v -> {
+            CallManager.playDtmfTone(call, '*');
+            keypadDialogTextViewText = keypadDialogTextView.getText().toString();
+            keypadDialogTextView.setText(keypadDialogTextViewText + "*");
+        });
+        btnHash.setOnClickListener(v -> {
+            CallManager.playDtmfTone(call, '#');
+            keypadDialogTextViewText = keypadDialogTextView.getText().toString();
+            keypadDialogTextView.setText(keypadDialogTextViewText + "#");
+        });
     }
 
     @SuppressLint("UseCompatTextViewDrawableApis")

@@ -82,15 +82,17 @@ public class CallService extends InCallService {
 
     @Override
     public void onCallRemoved(Call call) {
-//        Toast.makeText(this, "Call ended "+call.getDetails().getHandle().getSchemeSpecificPart(), Toast.LENGTH_SHORT).show();
         Toast.makeText(this, "Call ended", Toast.LENGTH_SHORT).show();
-        Log.d(MainActivity.TAG, "onCallRemoved: " + call.getDetails().getDisconnectCause().toString());
 
         if (CallListHelper.callList.size() > 0){
 
-            Intent intent = new Intent(this, CallActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            NotificationHelper.createIngoingCallNotification(this, CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1), "00:12:45", CallActivity.speakerBtnName, CallActivity.muteBtnName);
+            CallManager.HP_CALL_STATE = Call.STATE_ACTIVE;
+
+            Log.d(MainActivity.TAG, "onCallRemoved:........ " + call.getDetails().getDisconnectCause().toString());
+        }
+        else{
+            Log.d(MainActivity.TAG, "onCallRemoved:________ " + call.getDetails().getDisconnectCause().toString());
         }
     }
 }
