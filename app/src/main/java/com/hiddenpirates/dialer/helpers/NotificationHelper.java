@@ -44,25 +44,21 @@ public class NotificationHelper {
 
         Intent incomingCallIntent = new Intent(context, CallActivity.class);
         incomingCallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-
         PendingIntent incomingCallPendingIntent;
-
         incomingCallPendingIntent = PendingIntent.getActivity(context, 0, incomingCallIntent, PendingIntent.FLAG_MUTABLE);
+
 
         Intent answerCallIntent = new Intent(context, ActionReceiver.class);
         answerCallIntent.putExtra("pickUpCall", "YES");
-
         PendingIntent pickUpCallYesPendingIntent;
-
         pickUpCallYesPendingIntent = PendingIntent.getBroadcast(context, 1, answerCallIntent, PendingIntent.FLAG_MUTABLE);
 
 
         Intent rejectCallIntent = new Intent(context, ActionReceiver.class);
         rejectCallIntent.putExtra("pickUpCall", "NO");
-
         PendingIntent pickUpCallNoPendingIntent;
-
         pickUpCallNoPendingIntent = PendingIntent.getBroadcast(context, 2, rejectCallIntent, PendingIntent.FLAG_MUTABLE);
+
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
         builder.setOngoing(true);
@@ -79,6 +75,7 @@ public class NotificationHelper {
 
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.cancel(NOTIFICATION_ID);
         notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 

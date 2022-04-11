@@ -21,7 +21,7 @@ public class ActionReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Log.d(MainActivity.TAG, "onReceive222: "); // Debugging
+        Log.d(MainActivity.TAG, "onReceive222: " + CallListHelper.callList.size()); // Debugging
 
         Bundle intentExtras = intent.getExtras();
 

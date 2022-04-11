@@ -338,8 +338,10 @@ public class CallActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if (keypadDialog.isShowing()){
-            keypadDialog.dismiss();
+        if (keypadDialog != null){
+            if (keypadDialog.isShowing()){
+                keypadDialog.dismiss();
+            }
         }
     }
 
