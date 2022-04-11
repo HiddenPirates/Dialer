@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/callerName"
                 android:textSize="25sp"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnPrimary"
                 android:textAlignment="center"
                 android:text="Nur Alam (Demo Name)"
                 tools:ignore="HardcodedText" />
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/callerPhoneNumber"
                 android:textSize="16sp"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnPrimary"
                 android:textAlignment="center"
                 android:paddingBottom="20dp"
                 android:paddingTop="20dp"

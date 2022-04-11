@@ -46,7 +46,23 @@ public class CallService extends InCallService {
 
             CallActivity.mergeCallBtn.setVisibility(View.GONE);
 
-            NotificationHelper.createIngoingCallNotification(this, call, "12:00:4", "Speaker 1", "Mute 1");
+            String speakerBtnName, muteBtnName;
+
+            if (CallActivity.isSpeakerOn){
+                speakerBtnName = "Speaker Off";
+            }
+            else{
+                speakerBtnName = "Speaker On";
+            }
+
+            if (CallActivity.isMuted){
+                muteBtnName = "Unmute";
+            }
+            else{
+                muteBtnName = "Mute";
+            }
+
+            NotificationHelper.createIngoingCallNotification(this, call, "12:00:4", speakerBtnName, muteBtnName);
         }
 
         CallListHelper.callList.add(call);
