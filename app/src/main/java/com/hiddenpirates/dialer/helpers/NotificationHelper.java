@@ -87,8 +87,17 @@ public class NotificationHelper {
 
     public static void createIngoingCallNotification(Context context, Call call, String callDuration, String speakerBtnTxt, String muteBtnTxt) {
 
-        String callerPhoneNumber = call.getDetails().getHandle().getSchemeSpecificPart();
-        String callerName = ContactsHelper.getContactNameByPhoneNumber(callerPhoneNumber, context);
+        String callerPhoneNumber, callerName;
+
+        if (call.getDetails().hasProperty(Call.Details.PROPERTY_CONFERENCE)){
+            callerPhoneNumber = "Conference";
+            callerName = "Conference";
+        }
+        else{
+            callerPhoneNumber = call.getDetails().getHandle().getSchemeSpecificPart();
+            callerName = ContactsHelper.getContactNameByPhoneNumber(callerPhoneNumber, context);
+        }
+
         String CHANNEL_ID = "Hidden_Pirates_Phone_App";
 
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Ingoing Call Notification", NotificationManager.IMPORTANCE_DEFAULT);

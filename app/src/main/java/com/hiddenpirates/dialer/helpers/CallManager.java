@@ -62,16 +62,26 @@ public class CallManager {
 
                 notificationManager.cancel(NotificationHelper.NOTIFICATION_ID);
 
-                CallListHelper.callList.remove(NUMBER_OF_CALLS - 1);
+                try {
+                    Log.d(MainActivity.TAG, "TTT " + CallListHelper.callList.size());
+                    CallListHelper.callList.remove(NUMBER_OF_CALLS - 1);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    Log.d(MainActivity.TAG, "Disconnect error: "+e.getMessage());
+                }
+
                 NUMBER_OF_CALLS = NUMBER_OF_CALLS - 1;
+
                 CallActivity.isMuted = false;
                 CallActivity.isSpeakerOn = false;
+
+                Log.d(MainActivity.TAG, "Call disconnect event.");
             }
             else if (newState == Call.STATE_HOLDING){
 
                 CallActivity.callingStatusTV.setText("Call on hold");
                 CallActivity.callingStatusTV.setTextColor(inCallService.getColor(R.color.red));
-                Log.d(MainActivity.TAG, "HOLD: " + call.getDetails().getHandle().getSchemeSpecificPart());
             }
         }
     };
@@ -82,6 +92,11 @@ public class CallManager {
 
     public static void hangUpCall(Call mCall){
         mCall.disconnect();
+    }
+
+    public static void playDtmfTone(Call call, char c ){
+        call.playDtmfTone(c);
+        call.stopDtmfTone();
     }
 
     public static void holdCall(Call mCall){

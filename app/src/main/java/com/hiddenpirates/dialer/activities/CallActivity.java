@@ -79,6 +79,15 @@ public class CallActivity extends AppCompatActivity {
                     inProgressCallRLView.setVisibility(View.VISIBLE);
                     incomingRLView.setVisibility(View.GONE);
 
+                    if (CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS -1).getDetails().hasProperty(Call.Details.PROPERTY_CONFERENCE)){
+                        PHONE_NUMBER = "Conference";
+                        CALLER_NAME = "Conference";
+                    }
+                    else{
+                        PHONE_NUMBER = CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS -1).getDetails().getHandle().getSchemeSpecificPart();
+                        CALLER_NAME = ContactsHelper.getContactNameByPhoneNumber(PHONE_NUMBER, CallActivity.this);
+                    }
+
                     callerPhoneNumberTV.setText(PHONE_NUMBER);
                     callerNameTV.setText(CALLER_NAME);
 
@@ -227,6 +236,7 @@ public class CallActivity extends AppCompatActivity {
 
         mergeCallBtn.setOnClickListener(v -> {
             CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 2).conference(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
+            CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1).mergeConference();
         });
     }
 
@@ -291,8 +301,14 @@ public class CallActivity extends AppCompatActivity {
         }
         else if (call_state == Call.STATE_ACTIVE || call_state == Call.STATE_HOLDING){
 
-            PHONE_NUMBER = CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS -1).getDetails().getHandle().getSchemeSpecificPart();
-            CALLER_NAME = ContactsHelper.getContactNameByPhoneNumber(PHONE_NUMBER, this);
+            if (CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS -1).getDetails().hasProperty(Call.Details.PROPERTY_CONFERENCE)){
+                PHONE_NUMBER = "Conference";
+                CALLER_NAME = "Conference";
+            }
+            else{
+                PHONE_NUMBER = CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS -1).getDetails().getHandle().getSchemeSpecificPart();
+                CALLER_NAME = ContactsHelper.getContactNameByPhoneNumber(PHONE_NUMBER, this);
+            }
 
             Intent broadCastIntent = new Intent("call_answered");
             sendBroadcast(broadCastIntent);

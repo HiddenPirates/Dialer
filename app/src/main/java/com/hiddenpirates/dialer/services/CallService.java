@@ -1,20 +1,26 @@
 package com.hiddenpirates.dialer.services;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.telecom.Call;
 import android.telecom.InCallService;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
+import com.hiddenpirates.dialer.R;
 import com.hiddenpirates.dialer.activities.CallActivity;
 import com.hiddenpirates.dialer.activities.MainActivity;
 import com.hiddenpirates.dialer.helpers.CallListHelper;
 import com.hiddenpirates.dialer.helpers.CallManager;
+import com.hiddenpirates.dialer.helpers.NotificationHelper;
 
 public class CallService extends InCallService {
 
     int call_state;
 
+    @SuppressLint({"SetTextI18n", "UseCompatTextViewDrawableApis"})
     @Override
     public void onCallAdded(Call call) {
         super.onCallAdded(call);
@@ -22,9 +28,33 @@ public class CallService extends InCallService {
         Log.d(MainActivity.TAG, "onCallAdded: Service");
         Log.d(MainActivity.TAG, "onCallAdded: Call Details: " + call.getDetails().toString());
 
+        if (call.getDetails().hasProperty(Call.Details.PROPERTY_CONFERENCE)){
+
+            CallListHelper.callList.clear();
+            CallActivity.callerNameTV.setText("Conference Call");
+            CallActivity.callerPhoneNumberTV.setText("");
+
+            CallActivity.addCallBtn.setEnabled(true);
+            CallActivity.addCallBtn.setClickable(true);
+            CallActivity.addCallBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.my_theme)));
+            CallActivity.addCallBtn.setTextColor(getColor(R.color.my_theme));
+
+            CallActivity.holdBtn.setEnabled(true);
+            CallActivity.holdBtn.setClickable(true);
+            CallActivity.holdBtn.setCompoundDrawableTintList(ColorStateList.valueOf(getColor(R.color.my_theme)));
+            CallActivity.holdBtn.setTextColor(getColor(R.color.my_theme));
+
+            CallActivity.mergeCallBtn.setVisibility(View.GONE);
+
+            NotificationHelper.createIngoingCallNotification(this, call, "12:00:4", "Speaker 1", "Mute 1");
+        }
+
         CallListHelper.callList.add(call);
         CallManager.inCallService = this;
-        CallManager.NUMBER_OF_CALLS = CallManager.NUMBER_OF_CALLS + 1;
+        CallManager.NUMBER_OF_CALLS = CallListHelper.callList.size();
+
+        Log.d(MainActivity.TAG, "onCallAdded: NUM " + CallManager.NUMBER_OF_CALLS);
+
         call.registerCallback(CallManager.callback);
 
 
@@ -52,7 +82,15 @@ public class CallService extends InCallService {
 
     @Override
     public void onCallRemoved(Call call) {
-        Toast.makeText(this, "Call ended "+call.getDetails().getHandle().getSchemeSpecificPart(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Call ended "+call.getDetails().getHandle().getSchemeSpecificPart(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Call ended", Toast.LENGTH_SHORT).show();
         Log.d(MainActivity.TAG, "onCallRemoved: " + call.getDetails().getDisconnectCause().toString());
+
+        if (CallListHelper.callList.size() > 0){
+
+            Intent intent = new Intent(this, CallActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
     }
 }
