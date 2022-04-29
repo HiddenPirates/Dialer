@@ -1,4 +1,5 @@
 # Dialer
+- Please give a star to support this project
 
 A simple dialer app of android
 
